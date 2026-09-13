@@ -1,0 +1,30 @@
+﻿# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Streamlit config / cache
+.streamlit/
+
+# Web recording and video exports
+*.webm
+*.mp4
+*.avi
