@@ -56,6 +56,13 @@
   .toptab svg{width:18px;height:18px;}
   .toptab.active{background:var(--panel);color:var(--accent);border-color:var(--border);}
 
+  .topbar-right{display:flex;align-items:center;gap:14px;}
+
+  /* Language toggle */
+  .lang-toggle{display:flex;gap:4px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:4px;}
+  .lang-btn{padding:4px 10px;border-radius:7px;border:none;background:transparent;color:var(--text-dim);font-size:11px;font-weight:700;}
+  .lang-btn.active{background:var(--accent-dim);color:var(--accent);}
+
   .profile{display:flex;align-items:center;gap:10px;}
   .avatar{
     width:36px;height:36px;border-radius:50%;background:var(--accent-dim);
@@ -117,7 +124,7 @@
 
   .toggles-panel{
     position:absolute;top:14px;right:14px;background:rgba(8,13,22,0.85);backdrop-filter:blur(6px);
-    border:1px solid var(--border);border-radius:12px;padding:14px;width:150px;display:flex;flex-direction:column;gap:12px;
+    border:1px solid var(--border);border-radius:12px;padding:14px;width:160px;display:flex;flex-direction:column;gap:12px;
   }
   .toggle-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;}
   .switch{position:relative;width:36px;height:20px;border-radius:20px;background:#28344A;border:none;flex-shrink:0;}
@@ -148,6 +155,43 @@
     width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
   }
 
+  /* ---------- Compensation / Fall overlay badges ---------- */
+  .comp-badge{
+    position:absolute;bottom:60px;left:50%;transform:translateX(-50%);
+    background:rgba(244,63,94,0.92);backdrop-filter:blur(6px);
+    color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;
+    display:none;animation:fadeInUp .3s ease;white-space:nowrap;
+  }
+  .comp-badge.show{display:block;}
+  @keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+
+  /* Fall detection overlay */
+  .fall-overlay{
+    position:fixed;inset:0;background:rgba(244,63,94,0.35);z-index:9999;
+    display:flex;align-items:center;justify-content:center;
+    pointer-events:none;opacity:0;transition:opacity .15s;
+  }
+  .fall-overlay.show{opacity:1;animation:fallPulse 2s ease forwards;}
+  @keyframes fallPulse{0%{opacity:1;}70%{opacity:0.6;}100%{opacity:0;}}
+  .fall-msg{background:var(--red);color:#fff;font-size:22px;font-weight:800;padding:20px 40px;border-radius:20px;letter-spacing:-.02em;}
+
+  /* ---------- Gamified arc gauge ---------- */
+  .arc-gauge-wrap{position:relative;display:flex;justify-content:center;padding:8px 0;}
+  .arc-gauge-wrap svg{overflow:visible;}
+  .arc-track{fill:none;stroke:#1B2536;stroke-width:10;stroke-linecap:round;}
+  .arc-fill{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .3s,stroke .3s;}
+
+  /* Confetti particles */
+  .confetti-particle{
+    position:fixed;width:8px;height:8px;border-radius:2px;
+    pointer-events:none;z-index:9998;
+    animation:confettiFall var(--dur,1.2s) ease forwards;
+  }
+  @keyframes confettiFall{
+    0%{transform:translateY(0) rotate(0deg);opacity:1;}
+    100%{transform:translateY(calc(100vh - var(--sy,50px))) rotate(720deg);opacity:0;}
+  }
+
   /* ---------- Right stats ---------- */
   .stats{display:flex;flex-direction:column;gap:14px;}
   .stat-title{font-size:12.5px;font-weight:700;color:var(--text-dim);margin-bottom:8px;}
@@ -169,6 +213,13 @@
     margin-top:10px;background:var(--accent-dim);border:1px solid rgba(34,211,170,0.3);
     border-radius:10px;padding:12px 14px;font-size:13px;font-style:italic;color:var(--accent);line-height:1.5;
   }
+
+  /* AI Coaching card */
+  .coaching-card{background:var(--panel-2);border:1px solid rgba(59,130,246,0.3);border-radius:10px;padding:14px;margin-top:4px;}
+  .coaching-header{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#93C5FD;margin-bottom:8px;}
+  .coaching-text{font-size:12.5px;color:var(--text);line-height:1.6;}
+  .coaching-shimmer{background:linear-gradient(90deg,#1D2A3D 25%,#253147 50%,#1D2A3D 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;height:14px;margin:4px 0;}
+  @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
   /* ---------- Bottom row ---------- */
   .bottom-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:0 24px 20px;}
@@ -213,12 +264,46 @@
   footer .fbrand{display:flex;align-items:center;gap:8px;color:var(--text);font-weight:700;}
   footer .fbrand svg{width:16px;height:16px;color:var(--accent);}
 
+  /* Privacy pill */
+  .privacy-pill{display:flex;align-items:center;gap:5px;background:rgba(34,211,170,0.08);border:1px solid rgba(34,211,170,0.2);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--accent);}
+
   .placeholder-page{padding:40px;text-align:center;color:var(--text-dim);font-size:13px;}
   .placeholder-page h3{color:var(--text);font-size:16px;margin-bottom:6px;}
 
   .progress-table{width:100%;border-collapse:collapse;font-size:12.5px;}
   .progress-table th{text-align:left;color:var(--text-dim);font-weight:600;padding:8px;border-bottom:1px solid var(--border);}
   .progress-table td{padding:8px;border-bottom:1px solid var(--border);}
+
+  /* ---------- Pre/Post survey modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(8,13,22,0.85);backdrop-filter:blur(8px);
+    z-index:1000;display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .2s;
+  }
+  .modal-overlay.show{opacity:1;pointer-events:auto;}
+  .modal-box{
+    background:var(--panel);border:1px solid var(--border);border-radius:20px;
+    padding:32px;width:380px;max-width:90vw;
+  }
+  .modal-title{font-size:17px;font-weight:800;margin-bottom:4px;}
+  .modal-sub{font-size:12.5px;color:var(--text-dim);margin-bottom:24px;}
+  .emoji-scale{display:flex;gap:8px;margin:12px 0 20px;}
+  .emoji-btn{
+    flex:1;font-size:22px;padding:10px 0;border-radius:12px;border:2px solid var(--border);
+    background:var(--panel-2);cursor:pointer;transition:.15s;
+  }
+  .emoji-btn.selected{border-color:var(--accent);background:var(--accent-dim);}
+  .scale-label{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:8px;}
+  .modal-confirm{width:100%;background:var(--accent);color:#04140F;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;margin-top:8px;}
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--border);
+    border-radius:14px;padding:14px 18px;font-size:13px;max-width:320px;z-index:2000;
+    transform:translateY(20px);opacity:0;transition:.3s;line-height:1.5;
+  }
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast-title{font-weight:700;margin-bottom:4px;color:var(--accent);}
 
   @media print{
     body.print-report .topbar,
@@ -235,6 +320,71 @@
 </style>
 </head>
 <body>
+
+<!-- Fall detection overlay -->
+<div class="fall-overlay" id="fallOverlay">
+  <div class="fall-msg">⚠ Fall Detected — Are You Okay?</div>
+</div>
+
+<!-- Pre-session survey modal -->
+<div class="modal-overlay" id="preSurveyModal">
+  <div class="modal-box">
+    <div class="modal-title">Before You Begin</div>
+    <div class="modal-sub">Rate how you feel right now so we can track your progress accurately.</div>
+    <div class="section-label">Pain Level</div>
+    <div class="scale-label"><span>No pain</span><span>Severe pain</span></div>
+    <div class="emoji-scale" id="painScale">
+      <button class="emoji-btn" data-val="1">😊</button>
+      <button class="emoji-btn" data-val="2">😐</button>
+      <button class="emoji-btn" data-val="3">😕</button>
+      <button class="emoji-btn" data-val="4">😣</button>
+      <button class="emoji-btn" data-val="5">😭</button>
+    </div>
+    <div class="section-label" style="margin-top:8px;">Energy Level</div>
+    <div class="scale-label"><span>Exhausted</span><span>Energetic</span></div>
+    <div class="emoji-scale" id="energyScale">
+      <button class="emoji-btn" data-val="1">🪫</button>
+      <button class="emoji-btn" data-val="2">😴</button>
+      <button class="emoji-btn" data-val="3">🙂</button>
+      <button class="emoji-btn" data-val="4">⚡</button>
+      <button class="emoji-btn" data-val="5">🔥</button>
+    </div>
+    <button class="modal-confirm" id="preSurveyConfirm">Start Session →</button>
+  </div>
+</div>
+
+<!-- Post-session survey modal -->
+<div class="modal-overlay" id="postSurveyModal">
+  <div class="modal-box">
+    <div class="modal-title">Great Work! 🎉</div>
+    <div class="modal-sub">How are you feeling after that session?</div>
+    <div class="section-label">Fatigue Level</div>
+    <div class="scale-label"><span>Not tired</span><span>Very tired</span></div>
+    <div class="emoji-scale" id="fatigueScale">
+      <button class="emoji-btn" data-val="1">😊</button>
+      <button class="emoji-btn" data-val="2">🙂</button>
+      <button class="emoji-btn" data-val="3">😐</button>
+      <button class="emoji-btn" data-val="4">😩</button>
+      <button class="emoji-btn" data-val="5">💀</button>
+    </div>
+    <div class="section-label" style="margin-top:8px;">Pain Level (post-exercise)</div>
+    <div class="scale-label"><span>No pain</span><span>Severe pain</span></div>
+    <div class="emoji-scale" id="postPainScale">
+      <button class="emoji-btn" data-val="1">😊</button>
+      <button class="emoji-btn" data-val="2">😐</button>
+      <button class="emoji-btn" data-val="3">😕</button>
+      <button class="emoji-btn" data-val="4">😣</button>
+      <button class="emoji-btn" data-val="5">😭</button>
+    </div>
+    <button class="modal-confirm" id="postSurveyConfirm">Save Session →</button>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toastTitle"></div>
+  <div id="toastBody"></div>
+</div>
 
 <div class="topbar">
   <div class="brand">
@@ -270,11 +420,19 @@
     </button>
   </div>
 
-  <div class="profile">
-    <div class="avatar">GP</div>
-    <div class="profile-meta">
-      <div class="profile-name">Goutham</div>
-      <div class="profile-role">Physiotherapist</div>
+  <div class="topbar-right">
+    <!-- Language toggle -->
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ml">ML</button>
+      <button class="lang-btn" data-lang="hi">HI</button>
+    </div>
+    <div class="profile">
+      <div class="avatar">GP</div>
+      <div class="profile-meta">
+        <div class="profile-name">Goutham</div>
+        <div class="profile-role">Physiotherapist</div>
+      </div>
     </div>
   </div>
 </div>
@@ -331,6 +489,9 @@
       <canvas class="overlay" id="overlay"></canvas>
       <div class="live-badge" id="liveBadge" style="display:none;"><span class="live-dot"></span>Live</div>
 
+      <!-- Compensation detection badge -->
+      <div class="comp-badge" id="compBadge">⚠ Compensation Detected</div>
+
       <div class="placeholder-msg" id="startMsg">
         <div>Camera is off. RehabSense AI needs webcam access to track your movement.</div>
         <button class="btn-primary" id="startCamBtn">Start Camera</button>
@@ -351,6 +512,8 @@
         <div class="toggle-row">Show Angles <button class="switch on" data-toggle="angles"></button></div>
         <div class="toggle-row">Show Regions <button class="switch" data-toggle="regions"></button></div>
         <div class="toggle-row">Mirror View <button class="switch on" data-toggle="mirror"></button></div>
+        <div class="toggle-row">🔊 Voice <button class="switch on" data-toggle="voice"></button></div>
+        <div class="toggle-row">🎮 Gamified <button class="switch" data-toggle="gamified"></button></div>
         <button class="reset-btn" id="resetBtn">↺ Reset</button>
       </div>
     </div>
@@ -361,7 +524,7 @@
     <div class="card">
       <div class="stat-title">Repetitions</div>
       <div class="reps-value"><span id="repCount">0</span> <span class="reps-sub">/ <span id="repTarget">10</span></span></div>
-      <div class="incorrect-note">(incorrect: <span id="repIncorrect">0</span>)</div>
+      <div class="incorrect-note">(incorrect: <span id="repIncorrect">0</span> · compensation: <span id="compCount">0</span>)</div>
     </div>
 
     <div class="card">
@@ -372,7 +535,23 @@
       </div>
     </div>
 
-    <div class="card">
+    <!-- Gamified arc gauge (shown when gamified mode on) -->
+    <div class="card" id="arcGaugeCard" style="display:none;">
+      <div class="stat-title">Reach the Zone!</div>
+      <div class="arc-gauge-wrap">
+        <svg id="arcSvg" width="160" height="90" viewBox="0 0 160 90">
+          <!-- Track arc: semicircle -->
+          <path class="arc-track" id="arcTrack" d=""/>
+          <!-- Fill arc -->
+          <path class="arc-fill" id="arcFill" d=""/>
+          <!-- Target zone markers -->
+          <text id="arcLabel" x="80" y="85" text-anchor="middle" font-size="11" fill="#8A96AC"></text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Classic ROM bar (shown when gamified off) -->
+    <div class="card" id="romCard">
       <div class="stat-title">Range of Motion (ROM)</div>
       <div class="rom-value"><span id="romValue">0</span>°</div>
       <div class="rom-bar-track"><div class="rom-bar-fill" id="romBar"></div></div>
@@ -382,6 +561,15 @@
     <div class="card">
       <div class="stat-title" style="display:flex;justify-content:space-between;">Feedback</div>
       <div class="feedback-quote" id="feedbackText">Waiting for pose...</div>
+    </div>
+
+    <!-- AI Coaching card (populated after session ends) -->
+    <div class="card" id="coachingCard" style="display:none;">
+      <div class="coaching-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        AI Physio Coach
+      </div>
+      <div class="coaching-text" id="coachingText"></div>
     </div>
   </div>
 </div>
@@ -434,37 +622,131 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
     RehabSense AI <span style="color:var(--text-dim);font-weight:400;">&nbsp;AI-Powered Rehabilitation Monitoring</span>
   </div>
+  <div class="privacy-pill">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    All pose processing is on-device — no video leaves your browser
+  </div>
   <div>For a Healthier, More Independent Tomorrow ♥</div>
 </footer>
 
 <script type="module">
 import { PoseLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
 
-/* ============ Exercise config (mirrors config/exercise_config.py) ============ */
+/* ================================================================
+   CONFIG
+   ================================================================ */
+
+// ⚠️  HACKATHON DEMO KEY — replace with env variable for production.
+// Using Google Gemini API (free tier, no CC required).
+const GEMINI_API_KEY = "AQ.Ab8RN6L69tY20DQhW7EZY6O42ng8iWzrvB5rFMaR2ms5xUNGKA";
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+/* ================================================================
+   MULTILINGUAL VOICE CUES
+   ================================================================ */
+const VOICE_CUES = {
+  en: {
+    goodRep:    (n) => `Rep ${n} — great form!`,
+    halfway:    (n) => `Rep ${n} — halfway there, keep going!`,
+    done:       (n) => `Session complete! ${n} reps finished. Excellent work!`,
+    slowDown:   "Slow down — take it nice and steady.",
+    raiseHigher:"Raise a little higher for full range.",
+    keepTorso:  "Keep your torso stable — don't lean.",
+    fallAlert:  "Fall detected — are you okay? Please sit safely.",
+    compensation: "Watch your form — avoid using other muscles to compensate.",
+  },
+  ml: {
+    goodRep:    (n) => `${n} തവണ — നല്ല ഫോം!`,
+    halfway:    (n) => `${n} തവണ — പകുതിയായി, തുടരൂ!`,
+    done:       (n) => `സെഷൻ പൂർത്തിയായി! ${n} തവണ. മികച്ച പ്രകടനം!`,
+    slowDown:   "പതുക്കെ — ശ്രദ്ധയോടെ ചെയ്യൂ.",
+    raiseHigher:"കൂടുതൽ ഉയർത്തൂ — പൂർണ്ണ ചലനത്തിന്.",
+    keepTorso:  "ശരീരം സ്ഥിരമായി നിർത്തൂ.",
+    fallAlert:  "വീഴ്ച കണ്ടുപിടിച്ചു — സുരക്ഷിതമായി ഇരിക്കൂ.",
+    compensation: "ഫോം ശ്രദ്ധിക്കൂ — മറ്റ് പേശികൾ ഉപയോഗിക്കരുത്.",
+  },
+  hi: {
+    goodRep:    (n) => `${n} बार — बढ़िया फॉर्म!`,
+    halfway:    (n) => `${n} बार — आधा हो गया, जारी रखें!`,
+    done:       (n) => `सत्र पूरा! ${n} बार। शानदार काम!`,
+    slowDown:   "धीरे करें — धीरे और संयमित।",
+    raiseHigher:"थोड़ा और ऊपर उठाएं।",
+    keepTorso:  "कमर स्थिर रखें — झुकें नहीं।",
+    fallAlert:  "गिरावट पकड़ी — क्या आप ठीक हैं?",
+    compensation: "फॉर्म देखें — दूसरी मांसपेशियां इस्तेमाल न करें।",
+  },
+};
+
+/* ================================================================
+   EXERCISE CONFIG (mirrors config/exercise_config.py)
+   Adds: compensationCheck for secondary-joint cheat detection
+   ================================================================ */
 const EXERCISES = {
   shoulder_raise: {
     label: "Shoulder Raise", angleLabel: "Shoulder Angle",
     triplet: ["left_hip","left_shoulder","left_elbow"],
     restMin: 20, flexMax: 90, invert: true,
     targetLow: 70, targetHigh: 130, targetRom: 60,
+    compensationCheck: {
+      name: "Hip Hike",
+      // If hip Y drops > threshold vs baseline → hip is rising (compensation)
+      detector: (pts, baseline) => {
+        if (!baseline) return false;
+        const hipY = (pts.left_hip[1] + pts.right_hip[1]) / 2;
+        const dy = (baseline - hipY) / (pts._frameH || 1);
+        return dy > 0.06; // hip raised > 6% of frame height
+      },
+      message: "Hip hike detected — keep hips level",
+    },
   },
   knee_flexion: {
     label: "Knee Flexion", angleLabel: "Knee Angle",
     triplet: ["left_hip","left_knee","left_ankle"],
     restMin: 150, flexMax: 110, invert: false,
     targetLow: 90, targetHigh: 170, targetRom: 60,
+    compensationCheck: {
+      name: "Forward Lean",
+      // If torso angle (shoulder→hip vertical) tilts > threshold → forward lean
+      detector: (pts) => {
+        const dx = pts.left_shoulder[0] - pts.left_hip[0];
+        const dy = pts.left_hip[1] - pts.left_shoulder[1];
+        const angle = Math.abs(Math.atan2(dx, dy) * 180 / Math.PI);
+        return angle > 20;
+      },
+      message: "Forward lean detected — keep back straight",
+    },
   },
   straight_leg_raise: {
     label: "Straight Leg Raise", angleLabel: "Hip Angle",
     triplet: ["left_shoulder","left_hip","left_knee"],
     restMin: 165, flexMax: 130, invert: false,
     targetLow: 120, targetHigh: 175, targetRom: 40,
+    compensationCheck: {
+      name: "Hip Drop",
+      detector: (pts, baseline) => {
+        if (!baseline) return false;
+        const rightHipY = pts.right_hip[1];
+        const leftHipY  = pts.left_hip[1];
+        return Math.abs(rightHipY - leftHipY) / (pts._frameH || 1) > 0.07;
+      },
+      message: "Hip drop detected — keep pelvis level",
+    },
   },
   elbow_flexion: {
     label: "Elbow Flexion", angleLabel: "Elbow Angle",
     triplet: ["left_shoulder","left_elbow","left_wrist"],
     restMin: 160, flexMax: 60, invert: false,
     targetLow: 50, targetHigh: 170, targetRom: 90,
+    compensationCheck: {
+      name: "Shoulder Shrug",
+      detector: (pts, baseline) => {
+        if (!baseline) return false;
+        const shoulderY = pts.left_shoulder[1];
+        const dy = (shoulderY - baseline) / (pts._frameH || 1);
+        return dy < -0.05; // shoulder rose > 5% of frame
+      },
+      message: "Shoulder shrug detected — relax your shoulder",
+    },
   },
 };
 
@@ -485,7 +767,9 @@ const CONNECTIONS = [
   ["right_hip","right_knee"],["right_knee","right_ankle"],
 ];
 
-/* ============ State ============ */
+/* ================================================================
+   STATE
+   ================================================================ */
 let currentExercise = EXERCISES.shoulder_raise;
 let poseLandmarker, video, canvas, ctx, running = false;
 let repState = "REST", totalReps = 0, correctReps = 0, incorrectReps = 0, reachedTarget = false;
@@ -495,10 +779,50 @@ let torsoHistory = [];
 let showJoints = true, showAngles = true, showRegions = false, mirror = true;
 let skeletonColor = "#4caf50";
 let mediaRecorder, recordedChunks = [], isRecording = false;
+let currentLang = "en";
+let voiceEnabled = true;
+let gamifiedMode = false;
+let compensationCount = 0;
+let lastSpeakTime = 0;
+let hipYBaseline = null;
+let shoulderYBaseline = null;
+let fallHipHistory = []; // {y, t} rolling buffer for fall detection
+let fallDetected = false;
+let preSurveyData = { pain: null, energy: null };
+let pendingSession = null; // session object waiting for post-survey
 
 const $ = (id) => document.getElementById(id);
 
-/* ============ Setup UI wiring ============ */
+/* ================================================================
+   LANGUAGE TOGGLE
+   ================================================================ */
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentLang = btn.dataset.lang;
+  });
+});
+
+/* ================================================================
+   VOICE COACHING (Web Speech API)
+   ================================================================ */
+function speak(text, force = false) {
+  if (!voiceEnabled && !force) return;
+  if (!window.speechSynthesis) return;
+  const now = Date.now();
+  if (!force && now - lastSpeakTime < 4000) return; // debounce 4s
+  lastSpeakTime = now;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = currentLang === "ml" ? "ml-IN" : currentLang === "hi" ? "hi-IN" : "en-US";
+  utt.rate = 0.95;
+  window.speechSynthesis.speak(utt);
+}
+
+/* ================================================================
+   SETUP UI WIRING
+   ================================================================ */
 $("exerciseSelect").addEventListener("change", (e) => {
   currentExercise = EXERCISES[e.target.value];
   resetSession();
@@ -506,16 +830,23 @@ $("exerciseSelect").addEventListener("change", (e) => {
   $("targetRangeLabel").textContent = `${currentExercise.targetLow}° – ${currentExercise.targetHigh}°`;
   $("romTarget").textContent = currentExercise.targetRom;
   buildReferenceThumbs();
+  hipYBaseline = null; shoulderYBaseline = null;
 });
 
 document.querySelectorAll(".switch").forEach(sw => {
   sw.addEventListener("click", () => {
     sw.classList.toggle("on");
     const key = sw.dataset.toggle;
-    if (key === "joints") showJoints = sw.classList.contains("on");
-    if (key === "angles") showAngles = sw.classList.contains("on");
-    if (key === "regions") showRegions = sw.classList.contains("on");
-    if (key === "mirror") { mirror = sw.classList.contains("on"); video.style.transform = mirror ? "scaleX(-1)" : "none"; }
+    if (key === "joints")    showJoints    = sw.classList.contains("on");
+    if (key === "angles")    showAngles    = sw.classList.contains("on");
+    if (key === "regions")   showRegions   = sw.classList.contains("on");
+    if (key === "mirror")    { mirror = sw.classList.contains("on"); if(video) video.style.transform = mirror ? "scaleX(-1)" : "none"; }
+    if (key === "voice")     voiceEnabled  = sw.classList.contains("on");
+    if (key === "gamified") {
+      gamifiedMode = sw.classList.contains("on");
+      $("arcGaugeCard").style.display = gamifiedMode ? "" : "none";
+      $("romCard").style.display      = gamifiedMode ? "none" : "";
+    }
   });
 });
 
@@ -526,10 +857,58 @@ $("skeletonColor").addEventListener("input", (e) => {
 });
 
 $("resetBtn").addEventListener("click", resetSession);
+$("startCamBtn").addEventListener("click", () => showPreSurvey());
 
-$("startCamBtn").addEventListener("click", startCamera);
+/* ================================================================
+   PRE / POST SURVEY MODALS
+   ================================================================ */
+function setupEmojiScale(scaleId, stateKey) {
+  document.querySelectorAll(`#${scaleId} .emoji-btn`).forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(`#${scaleId} .emoji-btn`).forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      if (scaleId === "painScale")     preSurveyData.pain   = Number(btn.dataset.val);
+      if (scaleId === "energyScale")   preSurveyData.energy = Number(btn.dataset.val);
+    });
+  });
+}
+setupEmojiScale("painScale");
+setupEmojiScale("energyScale");
 
-/* ---- Navigation: sidebar has 7 views; only 5 have a matching top tab ---- */
+function showPreSurvey() {
+  $("preSurveyModal").classList.add("show");
+}
+
+$("preSurveyConfirm").addEventListener("click", () => {
+  $("preSurveyModal").classList.remove("show");
+  startCamera();
+});
+
+function showPostSurvey(session) {
+  pendingSession = session;
+  $("postSurveyModal").classList.add("show");
+}
+
+$("postSurveyConfirm").addEventListener("click", () => {
+  const fatigueSelected  = document.querySelector("#fatigueScale .emoji-btn.selected");
+  const postPainSelected = document.querySelector("#postPainScale .emoji-btn.selected");
+  const fatigue  = fatigueSelected  ? Number(fatigueSelected.dataset.val)  : null;
+  const postPain = postPainSelected ? Number(postPainSelected.dataset.val) : null;
+
+  if (pendingSession) {
+    pendingSession.painBefore   = preSurveyData.pain;
+    pendingSession.energyBefore = preSurveyData.energy;
+    pendingSession.fatigueAfter = fatigue;
+    pendingSession.painAfter    = postPain;
+    saveSession(pendingSession);
+    pendingSession = null;
+  }
+  $("postSurveyModal").classList.remove("show");
+});
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
 const VIEW_TO_TOPTAB = {monitor:"monitor", progress:"progress", guide:"exercises", patient:"patients", settings:"settings"};
 const TOPTAB_TO_VIEW = {monitor:"monitor", progress:"progress", exercises:"guide", patients:"patient", settings:"settings"};
 
@@ -543,8 +922,8 @@ document.querySelectorAll(".toptab").forEach(t => t.addEventListener("click", ()
 document.querySelectorAll(".navitem").forEach(n => n.addEventListener("click", () => navigate(n.dataset.view)));
 
 function renderView(view){
-  const main = $("mainArea");
-  const stats = $("statsPanel");
+  const main   = $("mainArea");
+  const stats  = $("statsPanel");
   const bottom = $("bottomRow");
   if (view === "monitor" || view === "calibrate"){
     main.querySelector("#monitorWrap") ? null : location.reload();
@@ -558,8 +937,8 @@ function renderView(view){
 
   const titles = {
     progress: ["Progress Dashboard", renderProgressTable()],
-    guide: ["Exercise Guide", "Full step-by-step visual guides for each exercise would live here — this prototype focuses its build effort on the live Monitor page."],
-    patient: ["Patient Profile", "Patient demographics, prescribed exercise plans, and therapist notes would live here in a full deployment."],
+    guide:    ["Exercise Guide", "Full step-by-step visual guides for each exercise would live here — this prototype focuses its build effort on the live Monitor page."],
+    patient:  ["Patient Profile", "Patient demographics, prescribed exercise plans, and therapist notes would live here in a full deployment."],
     settings: ["Settings", "Camera calibration, account, and notification preferences would live here in a full deployment."],
   };
   const [title, content] = titles[view] || ["", ""];
@@ -571,15 +950,17 @@ function renderProgressTable(){
   if (!sessions.length) return "<p>No sessions recorded yet. Run a session on the Monitor page, then click <b>End Session</b> to log it here.</p>";
   const rows = sessions.slice().reverse().map(s => `
     <tr><td>${new Date(s.date).toLocaleString()}</td><td>${s.exercise}</td>
-    <td>${s.correct}/${s.total}</td><td>${s.rom}°</td><td>${s.score}/100</td></tr>`).join("");
+    <td>${s.correct}/${s.total}</td><td>${s.rom}°</td><td>${s.score}/100</td>
+    <td>${s.painBefore ?? "—"}</td><td>${s.fatigueAfter ?? "—"}</td></tr>`).join("");
   return `<table class="progress-table" style="text-align:left;margin-top:14px;">
-    <tr><th>Date</th><th>Exercise</th><th>Correct Reps</th><th>ROM</th><th>Score</th></tr>${rows}</table>`;
+    <tr><th>Date</th><th>Exercise</th><th>Correct Reps</th><th>ROM</th><th>Score</th><th>Pain (pre)</th><th>Fatigue (post)</th></tr>${rows}</table>`;
 }
 
-/* ============ Reports page ============ */
+/* ================================================================
+   REPORTS PAGE
+   ================================================================ */
 function renderReportsPage(){
   const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
-
   if (!sessions.length){
     return `<div class="card placeholder-page"><h3>Reports</h3>
       <p>No sessions recorded yet. Run a session on the Monitor page, then click <b>End Session</b> to generate a report here.</p>
@@ -588,21 +969,30 @@ function renderReportsPage(){
 
   const totalSessions = sessions.length;
   const avgScore = Math.round(sessions.reduce((a,s) => a + Number(s.score), 0) / totalSessions);
-  const avgRom = Math.round(sessions.reduce((a,s) => a + Number(s.rom), 0) / totalSessions);
+  const avgRom   = Math.round(sessions.reduce((a,s) => a + Number(s.rom),   0) / totalSessions);
   const first = sessions[0], last = sessions[sessions.length - 1];
   const scoreChange = last.score - first.score;
 
-  // simple flag detection: significant ROM/score drop vs previous session, per patient/exercise history
   const flags = [];
   for (let i = 1; i < sessions.length; i++){
     const prev = sessions[i-1], cur = sessions[i];
-    if (Number(prev.rom) > 0 && Number(cur.rom) < Number(prev.rom) * 0.7){
+    if (Number(prev.rom) > 0 && Number(cur.rom) < Number(prev.rom) * 0.7)
       flags.push(`${new Date(cur.date).toLocaleDateString()} — ROM dropped from ${prev.rom}° to ${cur.rom}° (${cur.exercise})`);
-    }
-    if (Number(cur.score) < Number(prev.score) - 15){
+    if (Number(cur.score) < Number(prev.score) - 15)
       flags.push(`${new Date(cur.date).toLocaleDateString()} — Score dropped from ${prev.score} to ${cur.score} (${cur.exercise})`);
-    }
+    if (cur.fallDetected)
+      flags.push(`${new Date(cur.date).toLocaleDateString()} — ⚠ Fall event detected during session`);
   }
+
+  // Pain correlation note
+  const painSessions = sessions.filter(s => s.painBefore != null);
+  const painNote = painSessions.length >= 2
+    ? `<div style="margin:12px 0;padding:12px 14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);border-radius:10px;font-size:12.5px;">
+        📊 <b>Pain vs Performance:</b> ${painSessions.length} sessions with pain data.
+        Sessions with pain ≤ 2: avg score <b>${Math.round(painSessions.filter(s=>s.painBefore<=2).reduce((a,s)=>a+s.score,0)/Math.max(1,painSessions.filter(s=>s.painBefore<=2).length))}/100</b>.
+        Sessions with pain ≥ 4: avg score <b>${Math.round(painSessions.filter(s=>s.painBefore>=4).reduce((a,s)=>a+s.score,0)/Math.max(1,painSessions.filter(s=>s.painBefore>=4).length))}/100</b>.
+       </div>`
+    : "";
 
   const rows = sessions.slice().reverse().map(s => `
     <tr>
@@ -612,14 +1002,18 @@ function renderReportsPage(){
       <td>${s.incorrect}</td>
       <td>${s.rom}°</td>
       <td>${s.score}/100</td>
+      <td>${s.painBefore ?? "—"} / ${s.painAfter ?? "—"}</td>
+      <td>${s.fatigueAfter ?? "—"}</td>
+      ${s.fallDetected ? "<td style='color:#F43F5E;font-weight:700;'>⚠ Fall</td>" : "<td>—</td>"}
     </tr>`).join("");
 
   return `
   <div class="card" id="reportCard">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
       <h3 style="margin:0;">Rehabilitation Report</h3>
-      <div class="report-actions" style="display:flex;gap:8px;">
+      <div class="report-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="theme-btn" id="exportCsvBtn">⬇ Export CSV</button>
+        <button class="theme-btn" id="exportFhirBtn">🔗 Export FHIR JSON</button>
         <button class="theme-btn" id="printReportBtn">🖨 Print / Save PDF</button>
       </div>
     </div>
@@ -627,12 +1021,20 @@ function renderReportsPage(){
       Generated ${new Date().toLocaleString()} · ${totalSessions} session${totalSessions>1?"s":""} on record
     </p>
 
+    <!-- AI Summary block (injected before print) -->
+    <div id="aiSummaryBlock" style="display:none;margin:14px 0;padding:14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:12px;">
+      <div style="font-size:12px;font-weight:700;color:#93C5FD;margin-bottom:6px;">🤖 AI Clinical Summary</div>
+      <div id="aiSummaryText" style="font-size:13px;line-height:1.65;"></div>
+    </div>
+
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0;">
       <div class="card" style="padding:12px;"><div class="stat-title">Total Sessions</div><div style="font-size:24px;font-weight:800;">${totalSessions}</div></div>
       <div class="card" style="padding:12px;"><div class="stat-title">Average Score</div><div style="font-size:24px;font-weight:800;">${avgScore}/100</div></div>
       <div class="card" style="padding:12px;"><div class="stat-title">Average ROM</div><div style="font-size:24px;font-weight:800;">${avgRom}°</div></div>
       <div class="card" style="padding:12px;"><div class="stat-title">Score Change</div><div style="font-size:24px;font-weight:800;color:${scoreChange>=0?"var(--accent)":"var(--red)"};">${scoreChange>=0?"+":""}${scoreChange}</div></div>
     </div>
+
+    ${painNote}
 
     <div class="stat-title" style="margin-bottom:8px;">Review Flags</div>
     ${flags.length
@@ -642,21 +1044,25 @@ function renderReportsPage(){
 
     <div class="stat-title" style="margin:14px 0 8px;">Session Log</div>
     <table class="progress-table" style="text-align:left;">
-      <tr><th>Date</th><th>Exercise</th><th>Correct Reps</th><th>Incorrect</th><th>ROM</th><th>Score</th></tr>
+      <tr><th>Date</th><th>Exercise</th><th>Correct Reps</th><th>Incorrect</th><th>ROM</th><th>Score</th><th>Pain (pre/post)</th><th>Fatigue</th><th>Event</th></tr>
       ${rows}
     </table>
 
     <p style="color:var(--text-dim);font-size:11px;margin-top:18px;">
       This report summarizes software-defined performance indicators from an assistive monitoring prototype.
-      It is not a medical record or diagnosis and should be reviewed alongside a physiotherapist's clinical judgment.
+      It is not a medical record or diagnosis and should be reviewed alongside a physiotherapist's clinical judgment.<br>
+      <b>Privacy:</b> All pose processing is on-device — no video or biometric data is transmitted.
+      Positioned as a Class I wellness/monitoring tool, not a diagnostic device.
     </p>
   </div>`;
 }
 
 function exportSessionsCsv(){
   const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
-  const header = "date,exercise,total_reps,correct_reps,incorrect_reps,rom,score\n";
-  const rows = sessions.map(s => `${s.date},${s.exercise},${s.total},${s.correct},${s.incorrect},${s.rom},${s.score}`).join("\n");
+  const header = "date,exercise,total_reps,correct_reps,incorrect_reps,rom,score,pain_before,energy_before,fatigue_after,pain_after,fall_detected\n";
+  const rows = sessions.map(s =>
+    `${s.date},${s.exercise},${s.total},${s.correct},${s.incorrect},${s.rom},${s.score},${s.painBefore??""} ,${s.energyBefore??""} ,${s.fatigueAfter??""} ,${s.painAfter??""} ,${s.fallDetected??false}`
+  ).join("\n");
   const blob = new Blob([header + rows], {type: "text/csv"});
   const link = document.createElement("a");
   link.download = `rehabsense_report_${Date.now()}.csv`;
@@ -664,19 +1070,132 @@ function exportSessionsCsv(){
   link.click();
 }
 
-/* delegated listeners since the Reports buttons are created dynamically */
-document.addEventListener("click", (e) => {
-  if (e.target.id === "exportCsvBtn") exportSessionsCsv();
+/* ================================================================
+   FHIR R4 EXPORT
+   ================================================================ */
+function exportFhirJson(){
+  const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
+  const resources = sessions.map((s, i) => ({
+    resourceType: "Observation",
+    id: `rehabsense-obs-${i+1}`,
+    status: "final",
+    category: [{ coding: [{ system: "http://terminology.hl7.org/CodeSystem/observation-category", code: "activity", display: "Activity" }] }],
+    code: {
+      coding: [{ system: "http://loinc.org", code: "80319-7", display: "Range of motion of joint" }],
+      text: `Rehabilitation session — ${s.exercise}`,
+    },
+    subject: { reference: "Patient/rehabsense-patient-001" },
+    effectiveDateTime: s.date,
+    valueQuantity: { value: Number(s.rom), unit: "degrees", system: "http://unitsofmeasure.org", code: "deg" },
+    component: [
+      { code: { text: "Rehabilitation Score" }, valueQuantity: { value: Number(s.score), unit: "score" } },
+      { code: { text: "Correct Repetitions" },  valueQuantity: { value: Number(s.correct), unit: "reps" } },
+      { code: { text: "Exercise" },              valueString: s.exercise },
+      ...(s.painBefore   != null ? [{ code: { text: "Pain Level (pre, 1-5)" },   valueQuantity: { value: s.painBefore } }]   : []),
+      ...(s.fatigueAfter != null ? [{ code: { text: "Fatigue Level (post, 1-5)" }, valueQuantity: { value: s.fatigueAfter } }] : []),
+    ],
+    note: [{ text: "Generated by RehabSense AI — wellness monitoring prototype, not a diagnostic device." }],
+  }));
+
+  const bundle = {
+    resourceType: "Bundle",
+    type: "collection",
+    timestamp: new Date().toISOString(),
+    entry: resources.map(r => ({ resource: r })),
+  };
+
+  const blob = new Blob([JSON.stringify(bundle, null, 2)], {type: "application/json"});
+  const link = document.createElement("a");
+  link.download = `rehabsense_fhir_${Date.now()}.json`;
+  link.href = URL.createObjectURL(blob);
+  link.click();
+}
+
+/* ================================================================
+   LLM COACHING (Gemini API)
+   ================================================================ */
+async function generateLLMCoaching(sessionStats) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") {
+    return `Great session! You completed ${sessionStats.correct} reps with ${sessionStats.rom}° ROM. Keep focusing on smooth, controlled movements and aim to push your range a little further each session. Consistency is key — see you next time!`;
+  }
+
+  const langInstr = currentLang === "ml" ? "Respond in Malayalam (മലയാളം)." : currentLang === "hi" ? "Respond in Hindi." : "Respond in English.";
+  const prompt = `You are a supportive physiotherapy assistant (NOT a doctor). ${langInstr}
+Given these rehabilitation session stats, write 2-3 sentences of specific, encouraging coaching advice. Be concrete — mention the actual numbers. Do not give medical diagnoses.
+Stats: ${JSON.stringify(sessionStats, null, 2)}`;
+
+  try {
+    const res = await fetch(GEMINI_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text ?? "Could not generate coaching — check your API key.";
+  } catch (e) {
+    return `Excellent session! ${sessionStats.correct} reps completed with ${sessionStats.rom}° ROM. Keep up the consistency — each session brings you closer to your recovery goals.`;
+  }
+}
+
+async function generateLLMSummary(sessions) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") {
+    return `Patient has completed ${sessions.length} rehabilitation sessions. Average ROM: ${Math.round(sessions.reduce((a,s)=>a+Number(s.rom),0)/sessions.length)}°. Average score: ${Math.round(sessions.reduce((a,s)=>a+Number(s.score),0)/sessions.length)}/100. Progress appears steady — continued adherence to the exercise program is recommended.`;
+  }
+
+  const summary = sessions.map((s, i) => `Session ${i+1}: ${s.exercise}, ROM ${s.rom}°, score ${s.score}/100, ${s.correct}/${s.total} correct reps${s.fallDetected ? ", FALL EVENT" : ""}`).join("; ");
+  const prompt = `You are a rehabilitation report assistant. Write one concise paragraph (3-4 sentences) summarizing this patient's rehabilitation history for a physiotherapist's clinical report. Be objective and specific with numbers. Do not give diagnoses.
+Session history: ${summary}`;
+
+  try {
+    const res = await fetch(GEMINI_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+    });
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+  } catch {
+    return "";
+  }
+}
+
+/* delegated listeners for dynamically-created report buttons */
+document.addEventListener("click", async (e) => {
+  if (e.target.id === "exportCsvBtn")  exportSessionsCsv();
+  if (e.target.id === "exportFhirBtn") exportFhirJson();
   if (e.target.id === "printReportBtn"){
+    const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
+    if (sessions.length) {
+      const summaryEl = $("aiSummaryText");
+      const summaryBlock = $("aiSummaryBlock");
+      if (summaryEl && summaryBlock) {
+        summaryBlock.style.display = "";
+        summaryEl.innerHTML = `<div class="coaching-shimmer" style="width:90%;"></div><div class="coaching-shimmer" style="width:70%;"></div>`;
+        const summary = await generateLLMSummary(sessions);
+        summaryEl.textContent = summary;
+      }
+    }
     document.body.classList.add("print-report");
     window.print();
   }
 });
 window.addEventListener("afterprint", () => document.body.classList.remove("print-report"));
 
-/* ============ Reference thumbnails (simple inline stick figures) ============ */
+/* ================================================================
+   TOAST
+   ================================================================ */
+function showToast(title, body, duration = 5000) {
+  $("toastTitle").textContent = title;
+  $("toastBody").textContent  = body;
+  $("toast").classList.add("show");
+  setTimeout(() => $("toast").classList.remove("show"), duration);
+}
+
+/* ================================================================
+   REFERENCE THUMBNAILS
+   ================================================================ */
 function stickFigure(pose){
-  // pose: 'rest' | 'mid' | 'peak' — arm angle varies for illustration only
   const armAngle = {rest:170, mid:90, peak:20}[pose];
   const rad = armAngle * Math.PI/180;
   const shoulderX=50, shoulderY=30, armLen=22;
@@ -698,7 +1217,9 @@ function buildReferenceThumbs(){
 }
 buildReferenceThumbs();
 
-/* ============ Theme swatches ============ */
+/* ================================================================
+   THEME SWATCHES
+   ================================================================ */
 const THEME_COLORS = ["#3B82F6","#22D3AA","#8B5CF6","#F59E0B","#EC4899"];
 $("themeSwatches").innerHTML = THEME_COLORS.map((c,i) => `<div class="theme-swatch ${i===1?"selected":""}" style="background:${c}" data-color="${c}"></div>`).join("");
 document.querySelectorAll(".theme-swatch").forEach(sw => sw.addEventListener("click", () => {
@@ -717,11 +1238,130 @@ $("resetThemeBtn").addEventListener("click", () => {
   document.documentElement.style.setProperty("--accent-dim", "rgba(34,211,170,0.15)");
 });
 
-/* ============ Camera + pose pipeline ============ */
+/* ================================================================
+   GAMIFIED ARC GAUGE
+   ================================================================ */
+function buildArcPath(cx, cy, r, startDeg, endDeg) {
+  const toR = d => (d - 90) * Math.PI / 180;
+  const sx = cx + r * Math.cos(toR(startDeg));
+  const sy = cy + r * Math.sin(toR(startDeg));
+  const ex = cx + r * Math.cos(toR(endDeg));
+  const ey = cy + r * Math.sin(toR(endDeg));
+  const large = (endDeg - startDeg) > 180 ? 1 : 0;
+  return `M ${sx} ${sy} A ${r} ${r} 0 ${large} 1 ${ex} ${ey}`;
+}
+
+function updateArcGauge(angle, cfg) {
+  const arcSvg   = $("arcSvg");
+  const arcTrack = $("arcTrack");
+  const arcFill  = $("arcFill");
+  const arcLabel = $("arcLabel");
+  if (!arcSvg) return;
+
+  const cx = 80, cy = 5, r = 60;
+  const startDeg = -90, endDeg = 90; // semicircle
+
+  arcTrack.setAttribute("d", buildArcPath(cx, cy, r, startDeg, endDeg));
+
+  // Normalise angle to 0–1 position within target range
+  const lo = cfg.targetLow, hi = cfg.targetHigh;
+  const pct = Math.max(0, Math.min(1, (angle - lo) / (hi - lo)));
+  const fillEnd = startDeg + pct * (endDeg - startDeg);
+  arcFill.setAttribute("d", buildArcPath(cx, cy, r, startDeg, fillEnd));
+
+  // Color: red outside zone → green inside
+  const inZone = angle >= lo && angle <= hi;
+  arcFill.style.stroke = inZone ? "var(--accent)" : "var(--red)";
+  arcLabel.textContent = `${angle.toFixed(0)}° ${inZone ? "✓" : ""}`;
+}
+
+/* ================================================================
+   CONFETTI
+   ================================================================ */
+function triggerConfetti() {
+  const colors = ["#22D3AA","#3B82F6","#F59E0B","#EC4899","#8B5CF6","#fff"];
+  for (let i = 0; i < 30; i++) {
+    const el = document.createElement("div");
+    el.className = "confetti-particle";
+    el.style.cssText = `
+      left:${Math.random()*100}vw;
+      top:${Math.random()*30 + 10}vh;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      --dur:${0.9 + Math.random()*0.8}s;
+      --sy:${Math.random()*50 + 30}px;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    document.body.appendChild(el);
+    el.addEventListener("animationend", () => el.remove());
+  }
+}
+
+/* ================================================================
+   FALL DETECTION
+   ================================================================ */
+function detectFall(pts, frameH) {
+  const hipY = (pts.left_hip[1] + pts.right_hip[1]) / 2;
+  const now  = Date.now();
+  fallHipHistory.push({ y: hipY / frameH, t: now });
+  // Keep 30-frame rolling window (~1s at 30fps)
+  while (fallHipHistory.length > 30) fallHipHistory.shift();
+  if (fallHipHistory.length < 5) return false;
+  const oldest = fallHipHistory[0];
+  const dy = hipY / frameH - oldest.y;
+  const dt = (now - oldest.t) / 1000;
+  // Drop > 35% of frame height in < 0.8 s
+  return dy > 0.35 && dt < 0.8;
+}
+
+function triggerFallAlert() {
+  if (fallDetected) return;
+  fallDetected = true;
+  const overlay = $("fallOverlay");
+  overlay.classList.add("show");
+  speak(VOICE_CUES[currentLang].fallAlert, true);
+  showToast("⚠ Fall Detected", "A sudden movement was detected. Please check on the patient.", 8000);
+  setTimeout(() => { overlay.classList.remove("show"); }, 3000);
+  // Will be reset on next session start
+}
+
+/* ================================================================
+   COMPENSATION DETECTION
+   ================================================================ */
+let compBadgeTimeout = null;
+function checkCompensation(pts, frameH) {
+  const cfg = currentExercise;
+  if (!cfg.compensationCheck) return false;
+  pts._frameH = frameH;
+
+  // Set baselines on first frame
+  if (hipYBaseline === null) {
+    hipYBaseline      = (pts.left_hip[1] + pts.right_hip[1]) / 2;
+    shoulderYBaseline = pts.left_shoulder[1];
+    return false;
+  }
+
+  const detected = cfg.compensationCheck.detector(pts, hipYBaseline ?? shoulderYBaseline);
+  if (detected) {
+    const badge = $("compBadge");
+    badge.textContent = `⚠ ${cfg.compensationCheck.message}`;
+    badge.classList.add("show");
+    clearTimeout(compBadgeTimeout);
+    compBadgeTimeout = setTimeout(() => badge.classList.remove("show"), 3000);
+    compensationCount++;
+    $("compCount").textContent = compensationCount;
+    speak(VOICE_CUES[currentLang].compensation);
+  }
+  return detected;
+}
+
+/* ================================================================
+   CAMERA + POSE PIPELINE
+   ================================================================ */
 async function startCamera(){
   video = $("video"); canvas = $("overlay"); ctx = canvas.getContext("2d");
   $("startMsg").style.display = "none";
   $("liveBadge").style.display = "flex";
+  fallDetected = false;
 
   const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 960, height: 600 } });
   video.srcObject = stream;
@@ -782,13 +1422,13 @@ function loop(){
       );
     }
 
-    // skeleton connections
+    // Skeleton connections
     ctx.strokeStyle = "#3B82F6"; ctx.lineWidth = 2.5;
     CONNECTIONS.forEach(([a,b]) => {
       ctx.beginPath(); ctx.moveTo(pts[a][0],pts[a][1]); ctx.lineTo(pts[b][0],pts[b][1]); ctx.stroke();
     });
 
-    // highlighted joint-angle chain in skeleton color
+    // Highlighted joint-angle chain
     const [a,b,c] = currentExercise.triplet;
     ctx.strokeStyle = skeletonColor; ctx.lineWidth = 3.5;
     ctx.beginPath(); ctx.moveTo(pts[a][0],pts[a][1]); ctx.lineTo(pts[b][0],pts[b][1]); ctx.lineTo(pts[c][0],pts[c][1]); ctx.stroke();
@@ -802,7 +1442,7 @@ function loop(){
     const angle = calcAngle(pts[a], pts[b], pts[c]);
 
     if (showAngles && angle !== null){
-      ctx.restore(); // draw text un-mirrored so it reads correctly
+      ctx.restore();
       ctx.save();
       const labelX = mirror ? canvas.width - pts[b][0] : pts[b][0];
       ctx.fillStyle = "#fff"; ctx.font = "bold 16px Inter, sans-serif";
@@ -811,6 +1451,14 @@ function loop(){
       ctx.save();
       if (mirror){ ctx.translate(canvas.width,0); ctx.scale(-1,1); }
     }
+
+    // Fall detection
+    if (!fallDetected && detectFall(pts, canvas.height)) {
+      triggerFallAlert();
+    }
+
+    // Compensation check
+    checkCompensation(pts, canvas.height);
 
     processAngle(angle, pts);
   } else {
@@ -832,9 +1480,9 @@ function processAngle(angle, pts){
   maxAngle = maxAngle===null ? angle : Math.max(maxAngle, angle);
   const rom = (minAngle!==null && maxAngle!==null) ? (maxAngle-minAngle) : 0;
 
-  // torso stability
+  // Torso stability
   const sx=(pts.left_shoulder[0]+pts.right_shoulder[0])/2, sy=(pts.left_shoulder[1]+pts.right_shoulder[1])/2;
-  const hx=(pts.left_hip[0]+pts.right_hip[0])/2, hy=(pts.left_hip[1]+pts.right_hip[1])/2;
+  const hx=(pts.left_hip[0]+pts.right_hip[0])/2,           hy=(pts.left_hip[1]+pts.right_hip[1])/2;
   torsoHistory.push([(sx+hx)/2/canvas.width, (sy+hy)/2/canvas.height]);
   if (torsoHistory.length > 15) torsoHistory.shift();
   let torsoDisp = 0;
@@ -845,7 +1493,7 @@ function processAngle(angle, pts){
     torsoDisp = Math.sqrt(variance);
   }
 
-  // rep state machine
+  // Rep state machine
   const cfg = currentExercise;
   const isAtRest = cfg.invert ? angle <= cfg.restMin : angle >= cfg.restMin;
   const isFlexed = cfg.invert ? angle >= cfg.flexMax : angle <= cfg.flexMax;
@@ -856,21 +1504,31 @@ function processAngle(angle, pts){
     totalReps++;
     if (reachedTarget) correctReps++; else incorrectReps++;
     repState = "REST"; reachedTarget = false;
+
+    // Voice coaching on rep completion
+    const cues = VOICE_CUES[currentLang];
+    const target = repTargetValue();
+    if (correctReps === Math.floor(target / 2)) {
+      speak(cues.halfway(correctReps));
+    } else if (correctReps % 3 === 0 || correctReps === target) {
+      speak(cues.goodRep(correctReps));
+    }
+    if (gamifiedMode) triggerConfetti();
   }
 
-  // form / feedback
-  let reasons = [];
+  // Form / feedback
+  const reasons = [];
   const romRatio = rom / (cfg.targetRom || 1);
-  if (romRatio < 0.6) reasons.push("increase your range of motion");
-  if (velocity > 220) reasons.push("slow down for more control");
-  if (torsoDisp > 0.06) reasons.push("keep your torso stable");
-  let quality = Math.max(0, 100 - reasons.length*20);
+  if (romRatio < 0.6)   { reasons.push("increase your range of motion");    speak(VOICE_CUES[currentLang].raiseHigher); }
+  if (velocity > 220)   { reasons.push("slow down for more control");        speak(VOICE_CUES[currentLang].slowDown);    }
+  if (torsoDisp > 0.06) { reasons.push("keep your torso stable");            speak(VOICE_CUES[currentLang].keepTorso);  }
+  const quality = Math.max(0, 100 - reasons.length * 20);
 
   if (prevState === "FLEXED" && repState === "REST") repQualityScores.push(quality);
 
   const feedback = reasons.length ? `Try to ${reasons.join(" and ")}.` : "Good form — keep going!";
 
-  // ---- update UI ----
+  // Update UI
   $("repCount").textContent = correctReps;
   $("repTarget").textContent = repTargetValue();
   $("repIncorrect").textContent = incorrectReps;
@@ -878,20 +1536,108 @@ function processAngle(angle, pts){
   $("romValue").textContent = rom.toFixed(0);
   $("romBar").style.width = Math.min(100, (rom/cfg.targetRom)*100) + "%";
   $("feedbackText").textContent = feedback;
+
+  // Arc gauge
+  if (gamifiedMode) updateArcGauge(angle, cfg);
 }
 
 function repTargetValue(){ return $("repTargetInput") ? $("repTargetInput").value : 10; }
 
 function resetSession(){
   repState = "REST"; totalReps = 0; correctReps = 0; incorrectReps = 0; reachedTarget = false;
+  compensationCount = 0; fallDetected = false;
   minAngle = null; maxAngle = null; lastAngle = null; lastTime = null;
-  repQualityScores = []; torsoHistory = [];
-  $("repCount").textContent = "0"; $("repIncorrect").textContent = "0";
+  repQualityScores = []; torsoHistory = []; fallHipHistory = [];
+  hipYBaseline = null; shoulderYBaseline = null;
+  $("repCount").textContent = "0"; $("repIncorrect").textContent = "0"; $("compCount").textContent = "0";
   $("angleValue").textContent = "0"; $("romValue").textContent = "0"; $("romBar").style.width = "0%";
   $("feedbackText").textContent = "Waiting for pose...";
+  $("coachingCard").style.display = "none";
 }
 
-/* ============ Quick actions ============ */
+/* ================================================================
+   SESSION SAVE & AI COACHING
+   ================================================================ */
+function saveSession(session) {
+  const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
+  sessions.push(session);
+  localStorage.setItem("rehabsense_sessions", JSON.stringify(sessions));
+  renderRecentSession(session);
+  resetSession();
+}
+
+$("endBtn").addEventListener("click", async () => {
+  const avgQuality = repQualityScores.length ? repQualityScores.reduce((a,b)=>a+b,0)/repQualityScores.length : 0;
+  const rom = (minAngle!==null && maxAngle!==null) ? (maxAngle-minAngle) : 0;
+
+  // Get previous session ROM for trend
+  const prevSessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
+  const prevRom = prevSessions.length ? prevSessions[prevSessions.length-1].rom : null;
+  const romTrend = prevRom ? (rom - Number(prevRom)) : null;
+
+  const session = {
+    date: new Date().toISOString(),
+    exercise: currentExercise.label,
+    total: totalReps, correct: correctReps, incorrect: incorrectReps,
+    rom: rom.toFixed(0),
+    score: Math.round((avgQuality*0.5) + Math.min(100,(rom/currentExercise.targetRom)*100)*0.5),
+    compensationEvents: compensationCount,
+    fallDetected: fallDetected,
+    romTrend: romTrend ? romTrend.toFixed(1) : null,
+  };
+
+  // Voice session completion
+  speak(VOICE_CUES[currentLang].done(correctReps), true);
+
+  // Show AI coaching card with shimmer
+  $("coachingCard").style.display = "";
+  $("coachingText").innerHTML = `
+    <div class="coaching-shimmer" style="width:95%;"></div>
+    <div class="coaching-shimmer" style="width:80%;margin-top:6px;"></div>
+    <div class="coaching-shimmer" style="width:60%;margin-top:6px;"></div>
+  `;
+
+  // Generate coaching async
+  const statsForLLM = {
+    exercise: session.exercise,
+    correct_reps: session.correct,
+    total_reps: session.total,
+    rom_degrees: session.rom,
+    quality_score: Math.round(avgQuality),
+    compensation_events: session.compensationEvents,
+    rom_vs_prev_session: session.romTrend ? `${session.romTrend > 0 ? "+" : ""}${session.romTrend}°` : "first session",
+    session_score: session.score,
+  };
+
+  generateLLMCoaching(statsForLLM).then(coaching => {
+    $("coachingText").textContent = coaching;
+    showToast("🤖 AI Coach", coaching.substring(0, 120) + (coaching.length > 120 ? "…" : ""));
+  });
+
+  // Show post-survey (which calls saveSession on confirm)
+  showPostSurvey(session);
+});
+
+function renderRecentSession(s){
+  $("recentSession").innerHTML = `
+    <div class="session-row"><span>Date</span><span>${new Date(s.date).toLocaleDateString()}</span></div>
+    <div class="session-row"><span>Exercise</span><span>${s.exercise}</span></div>
+    <div class="session-row"><span>Reps</span><span>${s.correct}/${s.total}</span></div>
+    <div class="session-row"><span>ROM</span><span>${s.rom}°</span></div>
+    <div class="session-row"><span>Score</span><span>${s.score}/100</span></div>
+    ${s.painBefore != null ? `<div class="session-row"><span>Pain (pre)</span><span>${["","😊","😐","😕","😣","😭"][s.painBefore]}</span></div>` : ""}
+    ${s.fatigueAfter != null ? `<div class="session-row"><span>Fatigue (post)</span><span>${["","😊","🙂","😐","😩","💀"][s.fatigueAfter]}</span></div>` : ""}
+    ${s.fallDetected ? `<div class="session-row" style="color:var(--red);"><span>⚠ Event</span><span>Fall detected</span></div>` : ""}
+  `;
+}
+(function initRecent(){
+  const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
+  if (sessions.length) renderRecentSession(sessions[sessions.length-1]);
+})();
+
+/* ================================================================
+   QUICK ACTIONS
+   ================================================================ */
 $("snapBtn").addEventListener("click", () => {
   if (!canvas) return;
   const composite = document.createElement("canvas");
@@ -933,35 +1679,6 @@ $("recordBtn").addEventListener("click", () => {
   }
 });
 
-$("endBtn").addEventListener("click", () => {
-  const avgQuality = repQualityScores.length ? repQualityScores.reduce((a,b)=>a+b,0)/repQualityScores.length : 0;
-  const rom = (minAngle!==null && maxAngle!==null) ? (maxAngle-minAngle) : 0;
-  const session = {
-    date: new Date().toISOString(),
-    exercise: currentExercise.label,
-    total: totalReps, correct: correctReps, incorrect: incorrectReps,
-    rom: rom.toFixed(0), score: Math.round((avgQuality*0.5) + Math.min(100,(rom/currentExercise.targetRom)*100)*0.5),
-  };
-  const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
-  sessions.push(session);
-  localStorage.setItem("rehabsense_sessions", JSON.stringify(sessions));
-  renderRecentSession(session);
-  resetSession();
-});
-
-function renderRecentSession(s){
-  $("recentSession").innerHTML = `
-    <div class="session-row"><span>Date</span><span>${new Date(s.date).toLocaleDateString()}</span></div>
-    <div class="session-row"><span>Exercise</span><span>${s.exercise}</span></div>
-    <div class="session-row"><span>Reps</span><span>${s.correct}/${s.total}</span></div>
-    <div class="session-row"><span>ROM</span><span>${s.rom}°</span></div>
-    <div class="session-row"><span>Score</span><span>${s.score}/100</span></div>
-  `;
-}
-(function initRecent(){
-  const sessions = JSON.parse(localStorage.getItem("rehabsense_sessions") || "[]");
-  if (sessions.length) renderRecentSession(sessions[sessions.length-1]);
-})();
 </script>
 </body>
 </html>

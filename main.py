@@ -20,7 +20,7 @@ from src.pose.detector import PoseDetector
 from src.features.angles import angle_for_exercise
 from src.features.motion import AngleTracker, TorsoStability
 from src.rehab.repetition_counter import RepetitionCounter
-from src.rehab.form_analyzer import analyze_form
+from src.rehab.form_analyzer import analyze_form, check_compensation
 from src.rehab.scoring import calculate_rehab_score
 from src.database import db
 
@@ -61,6 +61,8 @@ def main():
     rep_quality_scores = []
     latest_feedback = "Waiting for pose..."
     session_start = time.time()
+    landmark_baseline = None   # captured on first frame with pose
+    compensation_events = 0
 
     cap = cv2.VideoCapture(args.camera)
     if not cap.isOpened():
@@ -80,6 +82,10 @@ def main():
         rep_snapshot = rep_counter.snapshot()
 
         if landmarks:
+            # Capture baseline posture on the first frame with a valid pose
+            if landmark_baseline is None:
+                landmark_baseline = landmarks
+
             angle = angle_for_exercise(landmarks, exercise_cfg["joint_triplet"])
             motion = angle_tracker.update(angle)
             torso_disp = torso_tracker.update(landmarks)
@@ -87,10 +93,19 @@ def main():
             prev_state = rep_counter.state
             rep_snapshot = rep_counter.update(angle)
 
-            form_result = analyze_form(exercise_cfg, motion["rom"], motion["velocity"], torso_disp)
+            form_result = analyze_form(
+                exercise_cfg, motion["rom"], motion["velocity"], torso_disp,
+                exercise_name=args.exercise,
+                landmarks=landmarks,
+                baseline=landmark_baseline,
+            )
             latest_feedback = form_result["feedback"]
 
-            # A rep just completed -> log its quality for the consistency score
+            # Count compensation events
+            if form_result["compensation"]["detected"]:
+                compensation_events += 1
+
+            # A rep just completed → log its quality for the consistency score
             if prev_state == "FLEXED" and rep_snapshot["state"] == "REST":
                 rep_quality_scores.append(form_result["quality_score"])
 
@@ -110,6 +125,8 @@ def main():
             angle_tracker.reset()
             rep_quality_scores.clear()
             session_start = time.time()
+            landmark_baseline = None
+            compensation_events = 0
 
         if rep_snapshot["total_reps"] >= args.target_reps:
             # auto-end once target reps reached
@@ -155,6 +172,7 @@ def main():
           f"Incorrect: {final_snapshot['incorrect_reps']}")
     print(f"ROM: {final_rom}°   Movement quality: {avg_quality:.1f}%")
     print(f"Rehabilitation score: {score_result['rehab_score']}/100")
+    print(f"Compensation events detected: {compensation_events}")
     print("Saved to database. Open the dashboard with: streamlit run dashboard/app.py")
 
 
